@@ -1,5 +1,7 @@
 #define FIELD_H
 
+#define NCURSES_WIDECHAR 1 
+
 #define BACKSPACE 127
 #define RETURN 10
 
@@ -23,3 +25,5 @@ int get_actual_width(field *f);
 bool append_to_field(field *f, char c);
 
 void draw_field(field *f);
+
+void hide_field(field *f);

@@ -67,7 +67,6 @@ bool move_to_field(field *f) {
 }
 
 
-
 void draw_input_text(field *f) {
   if(!f->is_drawn) {
     return;
@@ -117,6 +116,7 @@ bool append_to_field(field *f, char c) {
   if(f->is_drawn) {
     draw_input_text(f);
   }
+
   return true;
 }
 
@@ -166,3 +166,15 @@ void draw_field(field *f) {
   f->is_drawn = true;
 }
 
+
+void hide_field(field *f) {
+  if(!f->is_drawn) {
+    return;
+  }
+
+  for(int i = 0; i < get_actual_width(f); i++) {
+    mvaddch(f->y, f->x + i, ' ');
+    mvaddch(f->y + 1, f->x + i, ' ');
+    mvaddch(f->y + 2, f->x + i, ' ');
+  }
+}
