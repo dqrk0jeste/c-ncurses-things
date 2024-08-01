@@ -2,9 +2,9 @@
 
 #include <locale.h>
 #include <ncurses.h>
-#include <stdio.h>
 
 #include "field.h"
+#include "select_field.h"
 
 
 int main()
@@ -13,24 +13,41 @@ int main()
 
   initscr();
   raw();
+  keypad(stdscr, TRUE);
   noecho();
 
-  field *test_field = new_field("this is a test", 3, 4, 30);
-  draw_field(test_field);
+  char *question = "are you a unicorn?";
+  char *choices[] = {
+    "yes",
+    "no",
+    "maybe",
+    "maybe not"
+  };
 
-  move(test_field->y + 1, test_field->x + 1);
-  refresh();
+  select_field *s = new_select_field(question, choices, 4, 1, 1);
 
-  char current;
-  while((current = getch()) != RETURN) {
-    append_to_field(test_field, current);
-    refresh();
-  }
+  draw_select_field(s);
+  int selected = handle_selection(s);
+
+  // field *test_field = new_field("this is a test", 3, 4, 30);
+  // draw_field(test_field);
+  //
+  // move(test_field->y + 1, test_field->x + 1);
+  // refresh();
+  //
+  // char current;
+  // while((current = getch()) != RETURN) {
+  //   append_to_field(test_field, current);
+  //   refresh();
+  // }
+  //
 
   endwin();
 
-  printf("your input was:\n%s\n", test_field->input_text);
+  printf("your answer was:\n%s\n", s->choices[selected]);
 
-  free_field(test_field);
+  free_select_field(s);
+
+  // free_field(test_field);
   return 0;
 }
